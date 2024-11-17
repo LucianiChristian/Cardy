@@ -1,0 +1,110 @@
+﻿@page "/"
+
+<PageTitle>Card</PageTitle>
+
+<h1>Card</h1>
+
+<MudStack Row="true" Style="height: 500px;">
+    <Card CardModel="@_cardModel" />
+
+    <MudPaper Outlined="true" Class="overflow-auto">
+        <MudInputLabel>
+            Deity
+            <MudTextField @bind-Value="@_cardModel.Deity" Variant="Variant.Outlined" />
+        </MudInputLabel>
+
+        <MudInputLabel>
+            Card Name
+            <MudTextField @bind-Value="@_cardModel.CardName" Variant="Variant.Outlined" />
+        </MudInputLabel>
+
+        <MudInputLabel>
+            Follower Cost
+            <MudNumericField @bind-Value="@_cardModel.FollowerCost" Variant="Variant.Outlined" />
+        </MudInputLabel>
+
+        <MudInputLabel>
+            Prayer Cost
+            <MudNumericField @bind-Value="@_cardModel.PrayerCost" Variant="Variant.Outlined" />
+        </MudInputLabel>
+
+        <MudInputLabel>
+            Type
+            <MudTextField @bind-Value="@_cardModel.Type" Variant="Variant.Outlined" />
+        </MudInputLabel>
+
+        <MudInputLabel>
+            Subtype
+            <MudTextField @bind-Value="@_cardModel.Subtype" Variant="Variant.Outlined" />
+        </MudInputLabel>
+
+        <MudInputLabel>
+            Species
+            <MudTextField @bind-Value="@_cardModel.Species" Variant="Variant.Outlined" />
+        </MudInputLabel>
+
+        <MudInputLabel>
+            Archetype
+            <MudTextField @bind-Value="@_cardModel.Archetype" Variant="Variant.Outlined" />
+        </MudInputLabel>
+
+        <MudInputLabel>
+            Rarity
+            <MudTextField @bind-Value="@_cardModel.Rarity" Variant="Variant.Outlined" />
+        </MudInputLabel>
+
+        <MudInputLabel>
+            Attack
+            <MudNumericField @bind-Value="@_cardModel.Attack" Variant="Variant.Outlined" />
+        </MudInputLabel>
+
+        <MudInputLabel>
+            Health
+            <MudNumericField @bind-Value="@_cardModel.Health" Variant="Variant.Outlined" />
+        </MudInputLabel>
+
+        <MudInputLabel>
+            Abilities
+            <MudTextField @bind-Value="@_cardModel.Abilities" Variant="Variant.Outlined" />
+        </MudInputLabel>
+
+        <MudInputLabel>
+            Passive Effects
+            <MudTextField @bind-Value="@_cardModel.PassiveEffects" Variant="Variant.Outlined" />
+        </MudInputLabel>
+
+        <MudInputLabel>
+            Activated Effects
+            <MudTextField @bind-Value="@_cardModel.ActivatedEffects" Variant="Variant.Outlined" />
+        </MudInputLabel>
+
+        <MudInputLabel>
+            Starter Deck
+            <MudTextField @bind-Value="@_cardModel.StarterDeck" Variant="Variant.Outlined" />
+        </MudInputLabel>
+
+        <MudInputLabel>
+            Champion Exclusive
+            <MudTextField @bind-Value="@_cardModel.ChampionExclusive" Variant="Variant.Outlined" />
+        </MudInputLabel>
+
+        <MudInputLabel>
+            Image URL
+            <MudTextField @bind-Value="@_cardModel.ImageUrl" Variant="Variant.Outlined" />
+        </MudInputLabel>
+
+        <MudInputLabel>
+            Author
+            <MudTextField @bind-Value="@_cardModel.Author" Variant="Variant.Outlined" />
+        </MudInputLabel>
+
+        <MudInputLabel>
+            Version Number
+            <MudNumericField @bind-Value="@_cardModel.VersionNumber" Variant="Variant.Outlined" />
+        </MudInputLabel>
+    </MudPaper>
+</MudStack>
+
+@code {
+    private CardModel _cardModel = new();
+}

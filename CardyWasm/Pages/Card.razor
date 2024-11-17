@@ -1,0 +1,51 @@
+﻿<MudPaper Outlined="true" Height="300px" Width="300px">
+    <MudStack Row="true" Justify="Justify.SpaceBetween">
+        <div>@CardModel.CardName</div>
+        <MudStack Row="true">
+            <div>@CardModel.FollowerCost</div>
+            <div>@CardModel.PrayerCost</div>
+        </MudStack>
+    </MudStack>
+    <MudPaper Outlined="true">
+        <MudStack Style="height: 400px">
+            Card Image
+        </MudStack>
+    </MudPaper>
+    <MudPaper Outlined="true">
+        <MudStack>
+            @CardModel.Abilities
+            @CardModel.PassiveEffects
+            @CardModel.ActivatedEffects
+        </MudStack>
+    </MudPaper>
+    <MudPaper Outlined="true">
+        <MudStack Row="true" Justify="Justify.SpaceBetween">
+            <div>@CardModel.Attack</div>
+            <div></div>
+            <div>@CardModel.Health</div>
+        </MudStack>
+    </MudPaper>
+</MudPaper>
+
+@code {
+    [Parameter]    
+    public CardModel CardModel { get; set; }
+
+    private string GetBottomText()
+    {
+        @* @CardModel.Type - @CardModel.Species @CardModel.Subtype @CardModel.Archetype *@
+        var bottomText = CardModel.Type;
+
+        if (CardModel.Species is not null || CardModel.Subtype is not null || CardModel.Archetype is not null)
+        {
+            bottomText += " - ";
+        }
+
+        if (CardModel.Species is not null)
+        {
+                
+        }
+
+        return bottomText;
+    }
+}
