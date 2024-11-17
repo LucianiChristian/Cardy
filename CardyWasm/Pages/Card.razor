@@ -1,4 +1,4 @@
-﻿<MudPaper Outlined="true" Height="300px" Width="300px">
+﻿<MudPaper Outlined="true" Height="200px" Width="300px">
     <MudStack Row="true" Justify="Justify.SpaceBetween">
         <div>@CardModel.CardName</div>
         <MudStack Row="true">
@@ -14,14 +14,16 @@
     <MudPaper Outlined="true">
         <MudStack>
             @CardModel.Abilities
+            <MudFlexBreak />
             @CardModel.PassiveEffects
+            <MudFlexBreak />
             @CardModel.ActivatedEffects
         </MudStack>
     </MudPaper>
     <MudPaper Outlined="true">
         <MudStack Row="true" Justify="Justify.SpaceBetween">
             <div>@CardModel.Attack</div>
-            <div></div>
+            <div>@GetBottomText(CardModel)</div>
             <div>@CardModel.Health</div>
         </MudStack>
     </MudPaper>
@@ -31,21 +33,37 @@
     [Parameter]    
     public CardModel CardModel { get; set; }
 
-    private string GetBottomText()
+    private string GetBottomText(CardModel card)
     {
         @* @CardModel.Type - @CardModel.Species @CardModel.Subtype @CardModel.Archetype *@
-        var bottomText = CardModel.Type;
+        var bottomText = "";
 
-        if (CardModel.Species is not null || CardModel.Subtype is not null || CardModel.Archetype is not null)
+        if (card.Type is not null)
         {
-            bottomText += " - ";
+            bottomText += " " + CardModel.Type;
         }
 
-        if (CardModel.Species is not null)
+        if (card.Subtype is not null)
         {
-                
+            bottomText += " " + card.Subtype;
+        }
+
+        if (card.Species is not null || card.Subtype is not null || card.Archetype is not null)
+        {
+            bottomText += " -";
+        }
+
+        if (card.Species is not null)
+        {
+            bottomText += " " + card.Species;
+        }
+
+        if (card.Archetype is not null)
+        {
+            bottomText += " " + card.Archetype;
         }
 
         return bottomText;
     }
+
 }
