@@ -11,8 +11,8 @@ public class CardModel
     public string? Species { get; set; }
     public string? Archetype { get; set; }
     public string? Rarity { get; set; }
-    public int Attack { get; set; }
-    public int Health { get; set; }
+    public int? Attack { get; set; }
+    public int? Health { get; set; }
     public string? Abilities { get; set; }
     public string? PassiveEffects { get; set; }
     public string? ActivatedEffects { get; set; }

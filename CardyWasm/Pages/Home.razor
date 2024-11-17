@@ -52,17 +52,18 @@
             Rarity
             <MudTextField @bind-Value="@_cardModel.Rarity" Variant="Variant.Outlined" />
         </MudInputLabel>
-
-        <MudInputLabel>
-            Attack
-            <MudNumericField @bind-Value="@_cardModel.Attack" Variant="Variant.Outlined" />
-        </MudInputLabel>
-
-        <MudInputLabel>
-            Health
-            <MudNumericField @bind-Value="@_cardModel.Health" Variant="Variant.Outlined" />
-        </MudInputLabel>
-
+        @if (_cardModel.Type == "Acolyte")
+        {
+            <MudInputLabel>
+                Attack
+                <MudNumericField @bind-Value="@_cardModel.Attack" Variant="Variant.Outlined" />
+            </MudInputLabel>
+        
+            <MudInputLabel>
+                Health
+                <MudNumericField @bind-Value="@_cardModel.Health" Variant="Variant.Outlined" />
+            </MudInputLabel>   
+        }
         <MudInputLabel>
             Abilities
             <MudTextField @bind-Value="@_cardModel.Abilities" Variant="Variant.Outlined" />
@@ -103,8 +104,27 @@
             <MudNumericField @bind-Value="@_cardModel.VersionNumber" Variant="Variant.Outlined" />
         </MudInputLabel>
     </MudPaper>
+    
+    <MudFileUpload T="IReadOnlyList<IBrowserFile>" Accept=".csv" FilesChanged="UploadFiles" MaximumFileCount="1">
+        <ActivatorContent>
+            <MudButton Variant="Variant.Filled"
+                   Color="Color.Primary"
+                   StartIcon="@Icons.Material.Filled.CloudUpload">
+            Upload CSV
+            </MudButton>
+        </ActivatorContent>
+    </MudFileUpload>
 </MudStack>
 
 @code {
     private CardModel _cardModel = new();
+    IList<IBrowserFile> files = new List<IBrowserFile>();
+    private void UploadFiles(IReadOnlyList<IBrowserFile> files)
+    {
+        foreach (var file in files)
+        {
+            this.files.Add(file);
+        }
+        //TODO convert cvs to array of CardModel instances
+    }
 }
