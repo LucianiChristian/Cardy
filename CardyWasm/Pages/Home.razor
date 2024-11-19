@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using System.Globalization
 
 <PageTitle>Card</PageTitle>
 
@@ -15,7 +16,7 @@
 
         <MudInputLabel>
             Card Name
-            <MudTextField @bind-Value="@_cardModel.CardName" Variant="Variant.Outlined" />
+            <MudTextField @bind-Value="@_cardModel.Name" Variant="Variant.Outlined" />
         </MudInputLabel>
 
         <MudInputLabel>
@@ -91,7 +92,7 @@
 
         <MudInputLabel>
             Image URL
-            <MudTextField @bind-Value="@_cardModel.ImageUrl" Variant="Variant.Outlined" />
+            <MudTextField @bind-Value="@_cardModel.ImgUrl" Variant="Variant.Outlined" />
         </MudInputLabel>
 
         <MudInputLabel>
@@ -101,7 +102,7 @@
 
         <MudInputLabel>
             Version Number
-            <MudNumericField @bind-Value="@_cardModel.VersionNumber" Variant="Variant.Outlined" />
+            <MudNumericField @bind-Value="@_cardModel.Version" Variant="Variant.Outlined" />
         </MudInputLabel>
     </MudPaper>
     
@@ -118,12 +119,20 @@
 
 @code {
     private CardModel _cardModel = new();
-    IList<IBrowserFile> files = new List<IBrowserFile>();
-    private void UploadFiles(IReadOnlyList<IBrowserFile> files)
+    private async void UploadFiles(IReadOnlyList<IBrowserFile> files)
     {
         foreach (var file in files)
         {
-            this.files.Add(file);
+            await using (var stream = file.OpenReadStream(file.Size))
+            using (var reader = new StreamReader(stream))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            { 
+                var records = csv.GetRecordsAsync<CardModel>();
+                await foreach (var record in records)
+                {
+                    Console.WriteLine(record.Name);
+                }
+            }
         }
         //TODO convert cvs to array of CardModel instances
     }
