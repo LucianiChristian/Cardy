@@ -5,120 +5,34 @@
 
 <h1>Card</h1>
 
-<MudStack Row="true" Style="height: 500px;">
-    <Card CardModel="@_cardModel" />
-
-    <MudPaper Outlined="true" Class="overflow-auto">
-        <MudInputLabel>
-            Deity
-            <MudTextField @bind-Value="@_cardModel.Deity" Variant="Variant.Outlined" />
-        </MudInputLabel>
-
-        <MudInputLabel>
-            Card Name
-            <MudTextField @bind-Value="@_cardModel.Name" Variant="Variant.Outlined" />
-        </MudInputLabel>
-
-        <MudInputLabel>
-            Follower Cost
-            <MudNumericField @bind-Value="@_cardModel.FollowerCost" Variant="Variant.Outlined" />
-        </MudInputLabel>
-
-        <MudInputLabel>
-            Prayer Cost
-            <MudNumericField @bind-Value="@_cardModel.PrayerCost" Variant="Variant.Outlined" />
-        </MudInputLabel>
-
-        <MudInputLabel>
-            Type
-            <MudTextField @bind-Value="@_cardModel.Type" Variant="Variant.Outlined" />
-        </MudInputLabel>
-
-        <MudInputLabel>
-            Subtype
-            <MudTextField @bind-Value="@_cardModel.Subtype" Variant="Variant.Outlined" />
-        </MudInputLabel>
-
-        <MudInputLabel>
-            Species
-            <MudTextField @bind-Value="@_cardModel.Species" Variant="Variant.Outlined" />
-        </MudInputLabel>
-
-        <MudInputLabel>
-            Archetype
-            <MudTextField @bind-Value="@_cardModel.Archetype" Variant="Variant.Outlined" />
-        </MudInputLabel>
-
-        <MudInputLabel>
-            Rarity
-            <MudTextField @bind-Value="@_cardModel.Rarity" Variant="Variant.Outlined" />
-        </MudInputLabel>
-        @if (_cardModel.Type == "Acolyte")
-        {
-            <MudInputLabel>
-                Attack
-                <MudNumericField @bind-Value="@_cardModel.Attack" Variant="Variant.Outlined" />
-            </MudInputLabel>
-        
-            <MudInputLabel>
-                Health
-                <MudNumericField @bind-Value="@_cardModel.Health" Variant="Variant.Outlined" />
-            </MudInputLabel>   
-        }
-        <MudInputLabel>
-            Abilities
-            <MudTextField @bind-Value="@_cardModel.Abilities" Variant="Variant.Outlined" />
-        </MudInputLabel>
-
-        <MudInputLabel>
-            Passive Effects
-            <MudTextField @bind-Value="@_cardModel.PassiveEffects" Variant="Variant.Outlined" />
-        </MudInputLabel>
-
-        <MudInputLabel>
-            Activated Effects
-            <MudTextField @bind-Value="@_cardModel.ActivatedEffects" Variant="Variant.Outlined" />
-        </MudInputLabel>
-
-        <MudInputLabel>
-            Starter Deck
-            <MudTextField @bind-Value="@_cardModel.StarterDeck" Variant="Variant.Outlined" />
-        </MudInputLabel>
-
-        <MudInputLabel>
-            Champion Exclusive
-            <MudTextField @bind-Value="@_cardModel.ChampionExclusive" Variant="Variant.Outlined" />
-        </MudInputLabel>
-
-        <MudInputLabel>
-            Image URL
-            <MudTextField @bind-Value="@_cardModel.ImgUrl" Variant="Variant.Outlined" />
-        </MudInputLabel>
-
-        <MudInputLabel>
-            Author
-            <MudTextField @bind-Value="@_cardModel.Author" Variant="Variant.Outlined" />
-        </MudInputLabel>
-
-        <MudInputLabel>
-            Version Number
-            <MudNumericField @bind-Value="@_cardModel.Version" Variant="Variant.Outlined" />
-        </MudInputLabel>
-    </MudPaper>
-    
+<MudStack Style="height: 500px">
     <MudFileUpload T="IReadOnlyList<IBrowserFile>" Accept=".csv" FilesChanged="UploadFiles" MaximumFileCount="1">
         <ActivatorContent>
             <MudButton Variant="Variant.Filled"
-                   Color="Color.Primary"
-                   StartIcon="@Icons.Material.Filled.CloudUpload">
-            Upload CSV
+                       Color="Color.Primary"
+                       StartIcon="@Icons.Material.Filled.CloudUpload">
+                Upload CSV
             </MudButton>
         </ActivatorContent>
     </MudFileUpload>
+    
+    @if (_shouldRender)
+    {
+        <MudGrid Spacing="@_spacing" Justify="Justify.Center">
+            @foreach (var model in _cardList.Select((value) => new { value }))
+            {
+                <MudItem lg="4">
+                    <CardDisplay Card="@model.value"/>
+                </MudItem>
+            }
+        </MudGrid>
+    }
 </MudStack>
 
 @code {
-    private CardModel _cardModel = new();
+    private int _spacing = 20;
+    private Boolean _shouldRender = false;
+    private IList<Card> _cardList;
     private async void UploadFiles(IReadOnlyList<IBrowserFile> files)
     {
         foreach (var file in files)
@@ -128,12 +42,16 @@
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             { 
                 var records = csv.GetRecordsAsync<CardModel>();
+                var newList = new List<Card>();
                 await foreach (var record in records)
                 {
-                    Console.WriteLine(record.Name);
+                    newList.Add(new Card(record));
                 }
+
+                _cardList = newList;
             }
         }
-        //TODO convert cvs to array of CardModel instances
+        _shouldRender = true; 
+        StateHasChanged();
     }
 }

@@ -32,10 +32,10 @@ public class CardModel
     public string? Rarity { get; set; }
     
     [Name("Attack")]
-    public int? Attack { get; set; }
+    public string? Attack { get; set; }
     
     [Name("Health")]
-    public int? Health { get; set; }
+    public string? Health { get; set; }
     
     [Name("Abilities")]
     public string? Abilities { get; set; }
@@ -59,5 +59,5 @@ public class CardModel
     public string? Author { get; set; }
     
     [Name("Version #")]
-    public int Version { get; set; }
+    public string? Version { get; set; }
 }
