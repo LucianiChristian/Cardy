@@ -1,9 +1,9 @@
 ﻿<MudPaper Outlined="true" Height="450px" Width="300px">
     <MudStack Row="true" Justify="Justify.SpaceBetween"> 
-        <div>@card.Name</div>
+        <div>@CardModel.Name</div>
         <MudStack Row="true">
-            <div>@card.FollowerCost</div>
-            <div>@card.PrayerCost</div>
+            <div>@CardModel.FollowerCost</div>
+            <div>@CardModel.PrayerCost</div>
         </MudStack>
     </MudStack>
     <MudPaper Outlined="true">
@@ -13,17 +13,17 @@
     </MudPaper>
     <MudPaper Outlined="true">
         <MudStack Style="height: 240px">
-            @foreach (var ability in card.Abilities)
+            @foreach (var ability in CardModel.Abilities)
             {
                 @ability
                 <MudFlexBreak />
             }
-            @foreach (var passive in card.PassiveEffects)
+            @foreach (var passive in CardModel.PassiveEffects)
             {
                 @passive
                 <MudFlexBreak/>
             }
-            @foreach (var active in card.ActivatedEffects)
+            @foreach (var active in CardModel.ActivatedEffects)
             {
                 @active
                 <MudFlexBreak/>
@@ -32,14 +32,14 @@
     </MudPaper>
     <MudPaper Outlined="true">
         <MudStack Row="true" Justify="Justify.SpaceBetween">
-            <div>@card.Attack</div>
-            <div>@card.GetBottomText()</div>
-            <div>@card.Health</div>
+            <div>@CardModel.Attack</div>
+            <div>@CardModel.GetBottomText()</div>
+            <div>@CardModel.Health</div>
         </MudStack>
     </MudPaper>
 </MudPaper>
 
 @code {
     [Parameter]    
-    public Card card { get; set; }
+    public CardModel CardModel { get; set; }
 }

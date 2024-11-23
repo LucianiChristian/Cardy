@@ -22,7 +22,7 @@
             @foreach (var model in _cardList.Select((value) => new { value }))
             {
                 <MudItem lg="4">
-                    <CardDisplay Card="@model.value"/>
+                    <CardDisplay CardModel="@model.value"/>
                 </MudItem>
             }
         </MudGrid>
@@ -31,21 +31,27 @@
 
 @code {
     private int _spacing = 20;
-    private Boolean _shouldRender = false;
-    private IList<Card> _cardList;
-    private async void UploadFiles(IReadOnlyList<IBrowserFile> files)
+    private Boolean _shouldRender;
+    private IList<CardModel> _cardList = new List<CardModel>();
+    private async void UploadFiles(IReadOnlyList<IBrowserFile>? files)
     {
+        if (files is null)
+        {
+            return;
+        }
+        
         foreach (var file in files)
         {
             await using (var stream = file.OpenReadStream(file.Size))
             using (var reader = new StreamReader(stream))
             using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
             { 
-                var records = csv.GetRecordsAsync<CardModel>();
-                var newList = new List<Card>();
+                var records = csv.GetRecordsAsync<CSVModel>();
+                var newList = new List<CardModel>();
+                
                 await foreach (var record in records)
                 {
-                    newList.Add(new Card(record));
+                    newList.Add(new CardModel(record));
                 }
 
                 _cardList = newList;
