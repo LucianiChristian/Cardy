@@ -1,0 +1,26 @@
+/* Ensure MudTabs stays at the top of the panel */
+.mud-tabs {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+/* Apply a scrollable container for the MudTabPanel */
+.tabs-panel {
+    display: flex;
+    flex-direction: column;
+    height: 1200px; /* Adjust based on the header or other UI elements */
+}
+
+/* Scrollable content area inside the tab */
+.scrollable-tab-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 16px; /* Adjust padding as necessary */
+}
+
+/* Make the content inside the Stack scrollable */
+.overflow-scroll {
+    max-height: calc(100vh - 120px); /* Adjust based on your layout needs */
+    overflow-y: auto;
+}

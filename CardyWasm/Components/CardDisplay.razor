@@ -1,0 +1,59 @@
+﻿@* <MudPaper Outlined="true" Height="450px" Width="300px"> *@
+@*     <MudStack Row="true" Justify="Justify.SpaceBetween">  *@
+@*         <div>@CardModel.Name</div> *@
+@*         <MudStack Row="true"> *@
+@*             <div>@CardModel.FollowerCost</div> *@
+@*             <div>@CardModel.PrayerCost</div> *@
+@*         </MudStack> *@
+@*     </MudStack> *@
+@*     <MudPaper Outlined="true"> *@
+@*         <MudStack Style="height: 180px" Justify="Justify.Center" AlignItems="AlignItems.Center"> *@
+@*             Card Image *@
+@*         </MudStack> *@
+@*     </MudPaper> *@
+@*     <MudPaper Outlined="true"> *@
+@*         <MudStack Style="height: 240px"> *@
+@*             @foreach (var ability in CardModel.Abilities) *@
+@*             { *@
+@*                 @ability *@
+@*                 <MudFlexBreak /> *@
+@*             } *@
+@*             @foreach (var passive in CardModel.PassiveEffects) *@
+@*             { *@
+@*                 @passive *@
+@*                 <MudFlexBreak/> *@
+@*             } *@
+@*             @foreach (var active in CardModel.ActivatedEffects) *@
+@*             { *@
+@*                 @active *@
+@*                 <MudFlexBreak/> *@
+@*             } *@
+@*         </MudStack> *@
+@*     </MudPaper> *@
+@*     <MudPaper Outlined="true"> *@
+@*         <MudStack Row="true" Justify="Justify.SpaceBetween"> *@
+@*             <div>@CardModel.Attack</div> *@
+@*             <div>@CardModel.GetBottomText()</div> *@
+@*             <div>@CardModel.Health</div> *@
+@*         </MudStack> *@
+@*     </MudPaper> *@
+@* </MudPaper> *@
+
+<canvas id="@CardModel.Name" width="300" height="420" style="border:1px solid #000;"></canvas>
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="DrawToCanvas">
+    Draw with Parameters
+</MudButton>
+
+@code {
+    [Parameter]    
+    public CardModel CardModel { get; set; }
+    [Inject] private IJSRuntime JS { get; set; } = default!;
+    private string _textToDraw = "Hello World!!!";
+    private string _rectangleColor = "#0000FF"; // Default blue color
+
+    private async Task DrawToCanvas()
+    {
+        // Pass parameters to the JavaScript function
+        await JS.InvokeVoidAsync("drawOnCanvas", CardModel.Name, _rectangleColor, _textToDraw);
+    }
+}

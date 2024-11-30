@@ -1,0 +1,45 @@
+<MudStack>
+    <MudPaper Outlined="true" Class="p-4">
+        <MudContainer>
+            <MudText Typo="Typo.h6">@Title #@(Index + 1)</MudText>
+
+
+            <MudStack Spacing="2" Row="true" AlignItems="AlignItems.Center">
+                <!-- Column Name -->
+                find
+                <!-- Column Value -->
+                <MudItem>
+                    <MudTextField Label="Text" @bind-Value="Condition.Text" Variant="Variant.Outlined" />
+                </MudItem>
+                then replace with the following @Title.ToLower() 
+            </MudStack>
+            <MudDivider Class="my-4" />
+
+            <!-- Image Input Options -->
+            <MudStack Spacing="2">
+                <MudText Typo="Typo.body1">Attach @Title Image</MudText>
+                <!-- Image URL -->
+                <MudItem>
+                    <MudTextField Label="Image URL" @bind-Value="Condition.ImgURL" Variant="Variant.Outlined" />
+                </MudItem>
+            </MudStack>
+            <!-- Remove -->
+            <MudButton
+                Label="Column Value"
+                OnClick="() => OnRemove.InvokeAsync()"
+                Variant="Variant.Filled"
+                Color="Color.Error"
+                Disabled="@(Length == 1)"
+            >Delete</MudButton>
+        </MudContainer>
+    </MudPaper>
+</MudStack>
+
+
+@code {
+    [Parameter] public IconCondition Condition { get; set; }
+    [Parameter] public EventCallback<IconCondition> OnRemove { get; set; }
+    [Parameter] public int Index { get; set; }
+    [Parameter] public int Length { get; set; }
+    [Parameter] public string Title { get; set; }
+}

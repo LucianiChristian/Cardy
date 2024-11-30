@@ -53,7 +53,7 @@ public class CSVModel
     public string? ChampionExclusive { get; set; }
     
     [Name("Image URL")]
-    public string? ImgUrl { get; set; }
+    public string? ImgURL { get; set; }
     
     [Name("Author")]
     public string? Author { get; set; }
