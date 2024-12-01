@@ -26,7 +26,7 @@
             <!-- Remove -->
             <MudButton
                 Label="Column Value"
-                OnClick="() => OnRemove.InvokeAsync()"
+                OnClick="@(() => OnRemove.InvokeAsync())"
                 Variant="Variant.Filled"
                 Color="Color.Error"
                 Disabled="@(Length == 1)"

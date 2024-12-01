@@ -40,19 +40,24 @@
 @* </MudPaper> *@
 
 <canvas id="@CardModel.Name" width="300" height="420" style="border:1px solid #000;"></canvas>
-<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="DrawToCanvas">
+<MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@DrawToCanvas">
     Draw with Parameters
 </MudButton>
 
 @code {
     [Parameter]    
     public required CardModel CardModel { get; set; }
-    [Inject] private IJSRuntime Js { get; set; } = default!;
+    
+    [Inject] 
+    private IJSRuntime? Js { get; set; }
+    
     private string _textToDraw = "Hello World!!!";
     private string _rectangleColor = "#0000FF"; // Default blue color
 
     private async Task DrawToCanvas()
     {
+        if(Js is null) return;
+        
         // Pass parameters to the JavaScript function
         await Js.InvokeVoidAsync("drawOnCanvas", CardModel.Name, _rectangleColor, _textToDraw);
     }

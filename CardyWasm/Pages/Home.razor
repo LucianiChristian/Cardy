@@ -33,11 +33,11 @@
     
     @if (_shouldRender)
     {
-        <MudGrid Spacing="@_spacing" Justify="Justify.Center">
-            @foreach (var model in _cardList.Select((value) => new { value }))
+        <MudGrid Spacing="20" Justify="Justify.Center">
+            @foreach (var card in _cardList)
             {
                 <MudItem lg="4">
-                    <CardDisplay CardModel="@model.value"/>
+                    <CardDisplay CardModel="@card"/>
                 </MudItem>
             }
         </MudGrid>
@@ -45,11 +45,13 @@
 </MudStack>
 
 @code {
-    private int _spacing = 20;
-    private Boolean _shouldRender;
-    private Boolean _templateNotUploaded = true;
-    private IList<CardModel> _cardList = new List<CardModel>();
-    private CardyWasm.Template _myTemplate = new();
+    private bool _shouldRender;
+    private bool _templateNotUploaded = true;
+    
+    private IReadOnlyList<CardModel> _cardList = [];
+    
+    private CardTemplate? _myTemplate = new();
+    
     private async void UploadCsvFile(IReadOnlyList<IBrowserFile>? files)
     {
         if (files is null)
@@ -59,24 +61,24 @@
         
         foreach (var file in files)
         {
-            await using (var stream = file.OpenReadStream(file.Size))
-            using (var reader = new StreamReader(stream))
-            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-            {
-                var records = csv.GetRecordsAsync<CSVModel>();
-                var newList = new List<CardModel>();
+            await using var stream = file.OpenReadStream(file.Size);
+            using var reader = new StreamReader(stream);
+            using var csv = new CsvReader(reader, CultureInfo.InvariantCulture);
+            
+            var records = csv.GetRecordsAsync<CSVModel>();
+            var newList = new List<CardModel>();
                 
-                await foreach (var record in records)
-                {
-                    newList.Add(new CardModel(record));
-                }
-
-                _cardList = newList;
+            await foreach (var record in records)
+            {
+                newList.Add(new CardModel(record));
             }
+
+            _cardList = newList;
         }
         _shouldRender = true; 
         StateHasChanged();
     }
+    
     private async void UploadTemplate(IReadOnlyList<IBrowserFile>? files)
     {
         if (files is null)
@@ -88,19 +90,20 @@
         {
             await using var stream = file.OpenReadStream(file.Size);
             using var reader = new StreamReader(stream);
+            
             string fileContent = await reader.ReadToEndAsync();
             
             try
             {
-                _myTemplate = JsonSerializer.Deserialize<CardyWasm.Template>(fileContent);
+                _myTemplate = JsonSerializer.Deserialize<CardyWasm.CardTemplate>(fileContent);
                 _templateNotUploaded = false; 
+                
                 StateHasChanged();
             }
             catch (JsonException ex)
             {
                 Console.WriteLine($"JSON parsing failed: {ex.Message}");
             }
-
         }
     }
-};
+}
