@@ -46,14 +46,14 @@
 
 @code {
     [Parameter]    
-    public CardModel CardModel { get; set; }
-    [Inject] private IJSRuntime JS { get; set; } = default!;
+    public required CardModel CardModel { get; set; }
+    [Inject] private IJSRuntime Js { get; set; } = default!;
     private string _textToDraw = "Hello World!!!";
     private string _rectangleColor = "#0000FF"; // Default blue color
 
     private async Task DrawToCanvas()
     {
         // Pass parameters to the JavaScript function
-        await JS.InvokeVoidAsync("drawOnCanvas", CardModel.Name, _rectangleColor, _textToDraw);
+        await Js.InvokeVoidAsync("drawOnCanvas", CardModel.Name, _rectangleColor, _textToDraw);
     }
 }

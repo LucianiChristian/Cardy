@@ -13,4 +13,4 @@ function drawOnCanvas(canvasId, rectangleColor, textToDraw) {
     ctx.font = "20px Arial";
     ctx.fillStyle = "white";
     ctx.fillText(textToDraw, 70, 110);
-};
+}

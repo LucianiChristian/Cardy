@@ -26,16 +26,16 @@
             @if (Title != "Frame")
             {
                 <MudItem>
-                    <MudTextField Label="@(Title + " Width in pixels")" @bind-Value="Condition.height" Variant="Variant.Outlined" />
+                    <MudTextField Label="@(Title + " Width in pixels")" @bind-Value="Condition.Height" Variant="Variant.Outlined" />
                 </MudItem>
                 <MudItem>
-                    <MudTextField Label="@(Title + " Width in pixels")" @bind-Value="Condition.width" Variant="Variant.Outlined" />
+                    <MudTextField Label="@(Title + " Width in pixels")" @bind-Value="Condition.Width" Variant="Variant.Outlined" />
                 </MudItem>
                 <MudItem>
-                    <MudTextField Label="X Position in pixels" @bind-Value="Condition.xCord" Variant="Variant.Outlined" />
+                    <MudTextField Label="X Position in pixels" @bind-Value="Condition.XCord" Variant="Variant.Outlined" />
                 </MudItem>
                 <MudItem>
-                    <MudTextField Label="Y Position in pixels" @bind-Value="Condition.yCord" Variant="Variant.Outlined" />
+                    <MudTextField Label="Y Position in pixels" @bind-Value="Condition.YCord" Variant="Variant.Outlined" />
                 </MudItem>
             }
             <!-- Image Input Options -->
@@ -43,7 +43,7 @@
                 <MudText Typo="Typo.body1">Attach @Title Image</MudText>
                 <!-- Image URL -->
                 <MudItem>
-                    <MudTextField Label="Image URL" @bind-Value="Condition.ImgURL" Variant="Variant.Outlined" />
+                    <MudTextField Label="Image URL" @bind-Value="Condition.ImgUrl" Variant="Variant.Outlined" />
                 </MudItem>
             </MudStack>
             <!-- Remove -->
@@ -60,10 +60,10 @@
 
 
 @code {
-    [Parameter] public MaskCondition Condition { get; set; }
-    [Parameter] public List<string> ColumnNames { get; set; }
-    [Parameter] public EventCallback<MaskCondition> OnRemove { get; set; }
-    [Parameter] public int Index { get; set; }
-    [Parameter] public int Length { get; set; }
-    [Parameter] public string Title { get; set; }
+    [Parameter] public required MaskCondition Condition { get; set; }
+    [Parameter] public required IList<string> ColumnNames { get; set; }
+    [Parameter] public required string Title { get; set; }
+    [Parameter] public required EventCallback<MaskCondition> OnRemove { get; set; }
+    [Parameter] public required int Index { get; set; }
+    [Parameter] public required int Length { get; set; }
 }

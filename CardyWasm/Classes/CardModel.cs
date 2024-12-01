@@ -16,7 +16,7 @@ public class CardModel
     public IList<string> Abilities { get; }
     public IList<string> PassiveEffects { get; }
     public IList<string> ActivatedEffects { get; }
-    public string? ImgURL { get; }
+    public string? ImgUrl { get; }
     public string? Author { get; }
 
     // Primary constructor
@@ -52,7 +52,7 @@ public class CardModel
         Abilities = abilities is not null ? abilities.Split(" | ").ToList() : new List<string>();
         PassiveEffects = passiveEffects is not null ? passiveEffects.Split(" | ").ToList() : new List<string>();
         ActivatedEffects = activatedEffects is not null ? activatedEffects.Split(" | ").ToList() : new List<string>();
-        ImgURL = imgURL;
+        ImgUrl = imgURL;
         Author = author;
     }
     
@@ -72,7 +72,7 @@ public class CardModel
             other.Abilities,
             other.PassiveEffects,
             other.ActivatedEffects,
-            other.ImgURL,
+            other.ImgUrl,
             other.Author)
     { }
     public string GetBottomText()

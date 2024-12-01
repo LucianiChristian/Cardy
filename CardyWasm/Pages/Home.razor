@@ -18,7 +18,7 @@
     </MudFileUpload>
     <MudFileUpload T="IReadOnlyList<IBrowserFile>" 
             Accept=".csv" 
-            FilesChanged="UploadCSVFile" 
+            FilesChanged="UploadCsvFile" 
             MaximumFileCount="1"
             Disabled="_templateNotUploaded"
             >
@@ -50,7 +50,7 @@
     private Boolean _templateNotUploaded = true;
     private IList<CardModel> _cardList = new List<CardModel>();
     private CardyWasm.Template _myTemplate = new();
-    private async void UploadCSVFile(IReadOnlyList<IBrowserFile>? files)
+    private async void UploadCsvFile(IReadOnlyList<IBrowserFile>? files)
     {
         if (files is null)
         {
@@ -86,13 +86,15 @@
         
         foreach (var file in files)
         {
-            using var stream = file.OpenReadStream(file.Size);
+            await using var stream = file.OpenReadStream(file.Size);
             using var reader = new StreamReader(stream);
             string fileContent = await reader.ReadToEndAsync();
-
+            
             try
             {
                 _myTemplate = JsonSerializer.Deserialize<CardyWasm.Template>(fileContent);
+                _templateNotUploaded = false; 
+                StateHasChanged();
             }
             catch (JsonException ex)
             {
@@ -100,7 +102,5 @@
             }
 
         }
-        _templateNotUploaded = false; 
-        StateHasChanged();
     }
 };

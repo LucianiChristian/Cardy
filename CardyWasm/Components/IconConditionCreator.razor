@@ -20,7 +20,7 @@
                 <MudText Typo="Typo.body1">Attach @Title Image</MudText>
                 <!-- Image URL -->
                 <MudItem>
-                    <MudTextField Label="Image URL" @bind-Value="Condition.ImgURL" Variant="Variant.Outlined" />
+                    <MudTextField Label="Image URL" @bind-Value="Condition.ImgUrl" Variant="Variant.Outlined" />
                 </MudItem>
             </MudStack>
             <!-- Remove -->
@@ -37,9 +37,9 @@
 
 
 @code {
-    [Parameter] public IconCondition Condition { get; set; }
-    [Parameter] public EventCallback<IconCondition> OnRemove { get; set; }
-    [Parameter] public int Index { get; set; }
-    [Parameter] public int Length { get; set; }
-    [Parameter] public string Title { get; set; }
+    [Parameter] public required IconCondition Condition { get; set; }
+    [Parameter] public required string Title { get; set; }
+    [Parameter] public required int Index { get; set; }
+    [Parameter] public required int Length { get; set; }
+    [Parameter] public required EventCallback<IconCondition> OnRemove { get; set; }
 }
