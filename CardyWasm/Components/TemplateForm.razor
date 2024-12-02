@@ -1,0 +1,127 @@
+@using System.Text.Json
+<MudCard>
+    <MudForm Model="@Template" @ref="@_form" Validation="@(_formValidator)" ValidationDelay="0">
+        <MudCardContent>
+            <MudButton OnClick="@(() => AddCondition(Template.Frames))">Add New Frame</MudButton>
+            @foreach (var (condition, index) in Template.Frames.Select((condition, index) => (condition, index)))
+            {
+                <MaskConditionCreator
+                    Title="Frame"
+                    Condition="@condition"
+                    ColumnNames="@ColumnNames"
+                    Index="@index"
+                    Length="Template.Frames.Count"
+                    OnRemove="@(() => RemoveCondition(Template.Frames, condition))"/>
+            }
+        </MudCardContent>
+        <MudCardContent Class="pa-0">
+            <MudButton OnClick="@(() => AddCondition(Template.Masks))">Add New Mask</MudButton>
+            @foreach (var (condition, index) in Template.Masks.Select((condition, index) => (condition, index)))
+            {
+                <MaskConditionCreator
+                    Title="Mask"
+                    Condition="@condition"
+                    ColumnNames="@ColumnNames"
+                    Index="@index"
+                    Length="Template.Masks.Count"
+                    OnRemove="@(() => RemoveCondition(Template.Masks, condition))"/>
+            }
+        </MudCardContent><MudCardContent Class="pa-0">
+            <MudButton OnClick="@(() => AddCondition(Template.Emblems))">Add New Emblem</MudButton>
+            @foreach (var (condition, index) in Template.Emblems.Select((condition, index) => (condition, index)))
+            {
+                <MaskConditionCreator
+                    Title="Emblem"
+                    Condition="@condition"
+                    ColumnNames="@ColumnNames"
+                    Index="@index"
+                    Length="Template.Emblems.Count"
+                    OnRemove="@(() => RemoveCondition(Template.Emblems, condition))"/>
+            }
+        </MudCardContent>
+        <MudCardContent Class="pa-0">
+            <MudButton OnClick="@(() => AddCondition(Template.Icons))">Add New Icon</MudButton>
+            @foreach (var (condition, index) in Template.Icons.Select((condition, index) => (condition, index)))
+            {
+                <IconConditionCreator
+                    Title="Icon"
+                    Condition="@condition"
+                    Index="@index"
+                    Length="Template.Icons.Count"
+                    OnRemove="@(() => RemoveCondition(Template.Icons, condition))"/>
+            }
+        </MudCardContent>
+    </MudForm>
+    <MudCardActions>
+        <MudButton
+            Variant="Variant.Filled"
+            Color="Color.Primary"
+            Class="ml-auto"
+            OnClick="@ValidateForm">
+            Validate Template
+        </MudButton>
+        @if (_shouldRender)
+        {
+            <MudButton
+                Variant="Variant.Filled"
+                Color="Color.Primary"
+                Class="ml-auto"
+                OnClick="@DownloadTemplate">
+               Download Template 
+            </MudButton>
+        }
+    </MudCardActions>
+</MudCard>
+
+@code {
+    [Inject] 
+    private IJSRuntime? Js { get; set; }
+    [Parameter] public required CardTemplate Template { get; set; } = new();
+    [Parameter] public  required List<string> ColumnNames { get; set; }
+    private MudForm? _form;
+    private CardTemplateValidator _formValidator = new();
+    private bool _shouldRender = false;
+
+    private void RemoveCondition(List<MaskCondition> list, MaskCondition condition)
+    {
+        list.Remove(condition);
+    }
+    
+    private void RemoveCondition(List<IconCondition> list, IconCondition condition)
+    {
+        list.Remove(condition);
+    }
+    
+    private void AddCondition(List<MaskCondition> list) 
+    {
+        list.Add(new MaskCondition());
+    }
+    
+    private void AddCondition(List<IconCondition> list) 
+    {
+        list.Add(new IconCondition());
+    }
+    private async Task ValidateForm()
+    {
+        if (_form is not null)
+        {
+            await _form.Validate();
+            if (_form.IsValid)
+            {
+                _shouldRender = true;
+            }
+        }
+    }
+    private async Task DownloadTemplate()
+    {
+        if(Js is null || _form is null) return;
+        
+        await _form.Validate();
+        
+        if (_form.IsValid)
+        {
+            var templateBlob = JsonSerializer.Serialize(Template, new JsonSerializerOptions { WriteIndented = true });
+            await Js.InvokeVoidAsync("downloadTemplate", "template.json", "application/JSON", templateBlob);
+        }
+    }
+}

@@ -1,4 +1,4 @@
-namespace CardyWasm;
+namespace CardyWasm.Classes;
 
 public class FrameCondition
 {

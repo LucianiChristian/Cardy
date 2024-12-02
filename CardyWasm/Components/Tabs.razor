@@ -1,0 +1,94 @@
+<MudTabs Elevation="2"
+         Rounded="true"
+         ApplyEffectsToContainer="true"
+         PanelClass="tabs-panel"
+         Style="height: 5000px; overflow-y: scroll"
+         TabPanelClass="mud-tabs">
+    <MudTabPanel Text="Frames">
+        <MudButton OnClick="@(() => AddCondition(_frames))">Add New Frame</MudButton>
+        <MudStack Spacing="3" Class="scrollable-content">
+            @foreach (var (condition, index) in _frames.Select((condition, index) => (condition, index)))
+            {
+                <MaskConditionCreator
+                    Title="Frame"
+                    Condition="@condition"
+                    ColumnNames="@ColumnNames"
+                    Index="@index"
+                    Length="_frames.Count"
+                    OnRemove="@(() => RemoveCondition(_frames, condition))" />
+            }
+        </MudStack>
+    </MudTabPanel>
+    <MudTabPanel Text="Masks">
+        <MudButton OnClick="@(() => AddCondition(_masks))">Add New Mask</MudButton>
+        <MudStack Spacing="3" Class="scrollable-content">
+            @foreach (var (condition, index) in _masks.Select((condition, index) => (condition, index)))
+            {
+                <MaskConditionCreator
+                    Title="Mask"
+                    Condition="@condition"
+                    ColumnNames="@ColumnNames"
+                    Index="@index"
+                    Length="_masks.Count"
+                    OnRemove="@(() => RemoveCondition(_masks, condition))" />
+            }
+        </MudStack>
+    </MudTabPanel>
+    <MudTabPanel Text="Emblems">
+        <MudButton OnClick="@(() => AddCondition(_emblems))">Add New Emblem</MudButton>
+        <MudStack Spacing="3" Class="scrollable-content">
+            @foreach (var (condition, index) in _emblems.Select((condition, index) => (condition, index)))
+            {
+                <MaskConditionCreator
+                    Title="Emblem"
+                    Condition="@condition"
+                    ColumnNames="@ColumnNames"
+                    Index="@index"
+                    Length="_emblems.Count"
+                    OnRemove="@(() => RemoveCondition(_emblems, condition))" />
+            }
+        </MudStack>
+    </MudTabPanel>
+    <MudTabPanel Text="Icons">
+        <MudButton OnClick="@(() => AddCondition(_icons))">Add New Icon</MudButton>
+        <MudStack Spacing="3" Class="scrollable-content">
+            @foreach (var (condition, index) in _icons.Select((condition, index) => (condition, index)))
+            {
+                <IconConditionCreator
+                    Title="Icon"
+                    Condition="@condition"
+                    Index="@index"
+                    Length="_icons.Count"
+                    OnRemove="@(() => RemoveCondition(_icons, condition))" />
+            }
+        </MudStack>
+    </MudTabPanel>
+</MudTabs>
+
+@code {
+    [Parameter] public  required List<string> ColumnNames { get; set; }
+    private readonly List<MaskCondition> _frames = [ new MaskCondition() ];
+    private readonly List<MaskCondition> _masks = [ new MaskCondition() ];
+    private readonly List<MaskCondition> _emblems = [ new MaskCondition() ];
+    private readonly List<IconCondition> _icons = [ new IconCondition() ];
+    
+    private void RemoveCondition(List<MaskCondition> list, MaskCondition condition)
+    {
+        list.Remove(condition);
+    }
+    
+    private void RemoveCondition(List<IconCondition> list, IconCondition condition)
+    {
+        list.Remove(condition);
+    }
+    
+    private void AddCondition(List<MaskCondition> list) 
+    {
+        list.Add(new MaskCondition());
+    }
+    
+    private void AddCondition(List<IconCondition> list) 
+    {
+        list.Add(new IconCondition());
+    }
+}

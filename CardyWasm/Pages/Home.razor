@@ -1,4 +1,5 @@
 ﻿@page "/"
+@inject AlertService AlertService
 @using System.Globalization
 @using System.Text.Json
 
@@ -45,6 +46,8 @@
 </MudStack>
 
 @code {
+    [Inject] 
+    private IJSRuntime? Js { get; set; }
     private bool _shouldRender;
     private bool _templateNotUploaded = true;
     
@@ -52,7 +55,7 @@
     
     private CardTemplate? _myTemplate = new();
     
-    private async void UploadCsvFile(IReadOnlyList<IBrowserFile>? files)
+    private async Task UploadCsvFile(IReadOnlyList<IBrowserFile>? files)
     {
         if (files is null)
         {
@@ -75,11 +78,10 @@
 
             _cardList = newList;
         }
-        _shouldRender = true; 
-        StateHasChanged();
+        _shouldRender = true;
     }
     
-    private async void UploadTemplate(IReadOnlyList<IBrowserFile>? files)
+    private async Task UploadTemplate(IReadOnlyList<IBrowserFile>? files)
     {
         if (files is null)
         {
@@ -91,18 +93,16 @@
             await using var stream = file.OpenReadStream(file.Size);
             using var reader = new StreamReader(stream);
             
-            string fileContent = await reader.ReadToEndAsync();
+            var fileContent = await reader.ReadToEndAsync();
             
             try
             {
-                _myTemplate = JsonSerializer.Deserialize<CardyWasm.CardTemplate>(fileContent);
-                _templateNotUploaded = false; 
-                
-                StateHasChanged();
+                _myTemplate = JsonSerializer.Deserialize<CardTemplate>(fileContent);
+                _templateNotUploaded = false;
             }
             catch (JsonException ex)
-            {
-                Console.WriteLine($"JSON parsing failed: {ex.Message}");
+            { 
+                await AlertService.ShowAlert($"JSON parsing failed: {ex.Message}");
             }
         }
     }

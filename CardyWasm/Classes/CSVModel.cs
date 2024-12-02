@@ -1,6 +1,6 @@
 ﻿using CsvHelper.Configuration.Attributes;
 
-namespace CardyWasm;
+namespace CardyWasm.Classes;
 
 public class CSVModel
 {
