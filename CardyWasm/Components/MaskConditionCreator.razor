@@ -8,7 +8,12 @@
                 <!-- Column Name -->
                 if
                 <MudItem>
-                    <MudSelect Label="Column Name" @bind-Value="Condition.ColumnName" Variant="Variant.Outlined">
+                    <MudSelect 
+                        Label="Column Name"
+                        @bind-Value="Condition.ColumnName"
+                        For="@(() => Condition.ColumnName)"
+                        Immediate="true"
+                        Variant="Variant.Outlined">
                         @foreach (var value in ColumnNames)
                         {
                             <MudSelectItem Value="value">@value</MudSelectItem>

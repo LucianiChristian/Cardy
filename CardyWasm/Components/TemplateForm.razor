@@ -1,7 +1,8 @@
 @using System.Text.Json
+@using FluentValidation
 <MudCard>
-    <MudForm Model="@Template" @ref="@_form" Validation="@(_formValidator)" ValidationDelay="0">
-        <MudCardContent>
+    <MudForm Model="@Template" @ref="@_form" Validation="@(_formValidator.ValidateValue)" ValidationDelay="0">
+        <MudCardContent Class="pa-0">
             <MudButton OnClick="@(() => AddCondition(Template.Frames))">Add New Frame</MudButton>
             @foreach (var (condition, index) in Template.Frames.Select((condition, index) => (condition, index)))
             {
